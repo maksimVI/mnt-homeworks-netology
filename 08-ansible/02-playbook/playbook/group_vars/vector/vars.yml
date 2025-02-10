@@ -1,0 +1,22 @@
+---
+vector_version: "0.44.0"
+vector_config_dir: "/etc/vector"
+vector_config:
+  sources:
+    my_logs:
+      type: file
+      read_from: beginning
+      ignore_older_secs: 600
+      include:
+        - /home/maksim/logs/*.log
+  sinks:
+    to_clickhouse:
+      type: clickhouse
+      inputs:
+        - my_logs
+      database: logs
+      endpoint: http://158.160.73.111:8123 # сервер с clickhouse
+      table: vector_table
+      compression: gzip
+      healthcheck: false
+      skip_unknown_fields: true
