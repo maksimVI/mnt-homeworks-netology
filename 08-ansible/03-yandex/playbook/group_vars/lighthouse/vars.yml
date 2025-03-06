@@ -1,0 +1,3 @@
+---
+lighthouse_link_zip: https://github.com/VKCOM/lighthouse/archive/refs/heads/master.zip
+lighthouse_location_dir: "{{ ansible_env.HOME }}/lighthouse"

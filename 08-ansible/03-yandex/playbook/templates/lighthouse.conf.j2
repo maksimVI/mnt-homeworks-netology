@@ -1,0 +1,9 @@
+server {
+    listen          80;
+    server_name     _;  # Принимает все запросы
+
+    location / {
+        root    /usr/share/nginx/lighthouse-master/;
+        index   index.html;
+    }
+}
