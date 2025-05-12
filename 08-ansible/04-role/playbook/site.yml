@@ -1,0 +1,28 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+
+  roles:
+    - clickhouse
+
+  tags: install_clickhouse
+
+- name: Install Vector
+  hosts: vector
+
+  roles:
+    - vector-role
+  tags: install_vector
+
+- name: Install lighthouse
+  hosts: lighthouse
+
+  roles:
+    - lighthouse-role
+  
+  tags: install_lighthouse
+
+  post_tasks:
+    - name: Lighthouse | User URL
+      debug:
+        msg: "http://{{ hostvars['lighthouse-01'].ansible_host }}/#http://{{ hostvars['clickhouse-01'].ansible_host }}:8123/?user={{ clickhouse_user }}"

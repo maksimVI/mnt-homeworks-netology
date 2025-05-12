@@ -1,0 +1,36 @@
+- name: Lighthouse | Install unzip
+  become: true
+  ansible.builtin.package:
+    name: unzip
+    state: present
+
+- name: Lighthouse | Directory exists
+  ansible.builtin.file:
+    path: "{{ lighthouse_location_dir }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: Lighthouse | Get archive
+  ansible.builtin.get_url:
+    url: "{{ lighthouse_link_zip }}"
+    dest: "{{ lighthouse_location_dir }}/lighthouse.zip"
+    mode: "0644"
+
+- name: Lighthouse | Unpack archive
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ lighthouse_location_dir }}/lighthouse.zip"
+    dest: /usr/share/nginx
+    remote_src: true
+
+- name: Lighthouse | Create NGINX config
+  become: true
+  ansible.builtin.template:
+    src: lighthouse.conf.j2
+    dest: "/etc/nginx/conf.d/lighthouse.conf"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0664"
+  notify: Nginx | Restart

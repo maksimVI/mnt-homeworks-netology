@@ -1,0 +1,2 @@
+---
+lighthouse_location_dir: "{{ ansible_env.HOME }}/lighthouse"

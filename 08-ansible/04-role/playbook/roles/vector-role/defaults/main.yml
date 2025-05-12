@@ -1,0 +1,28 @@
+---
+vector_version: "0.44.0"
+vector_config:
+  sources:
+    hw_logs:
+      type: demo_logs
+      format: syslog
+      interval: 1
+  transforms:
+    parse_logs:
+      inputs:
+      - hw_logs
+      source: |-
+        . = parse_syslog!(string!(.message))
+        .timestamp = to_string(.timestamp)
+        .timestamp = slice!(.timestamp, start:0, end: -1)
+      type: remap
+  sinks:
+    to_clickhouse:
+      type: clickhouse
+      inputs:
+        - parse_logs
+      database: hw_demo_logs
+      endpoint: http://158.160.49.30:8123 # сервер clickhouse
+      table: hw_demo_logs_table
+      compression: gzip
+      healthcheck: false
+      skip_unknown_fields: true

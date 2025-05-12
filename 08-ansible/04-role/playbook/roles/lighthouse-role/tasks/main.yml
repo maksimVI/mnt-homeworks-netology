@@ -1,0 +1,6 @@
+---
+- name: Include NGINX setup
+  import_tasks: nginx.yml
+
+- name: Include Lighthouse setup
+  import_tasks: lighthouse.yml

@@ -1,0 +1,6 @@
+---
+- name: Lightkhouse | Restart Nginx
+  become: true
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
